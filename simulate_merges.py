@@ -28,6 +28,8 @@ for merge_id in range(1, 101):
 
     defect_leakage = random.choice([0, 1]) if ai_result["decision"] == "PASS" else 0
 
+    """
     metrics.add_result({
         "merge_id": merge_id,
         "coverage": c
+    """
