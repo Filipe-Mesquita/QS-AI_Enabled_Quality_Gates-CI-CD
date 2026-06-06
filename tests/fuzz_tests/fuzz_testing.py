@@ -1,4 +1,4 @@
-import random
+import random, string
 from app.passwords import validate_password
 from app.loan import evaluate_loan
 from app.calculator import divide
@@ -28,7 +28,7 @@ def run_fuzz():
             # Gera uma password aleatória entre 0 e 20
             # Seleciona caracteres aleatórios da lista indicada
             # Junta todos os caracteres selecionados numa única string
-            validate_password(''.join(random.choices("abc123!@", k=random.randint(0,20))))
+            validate_password(''.join(random.choices(string.ascii_letters + string.digits + string.punctuation, k=random.randint(0,20))))
         except:
             failures += 1
 
