@@ -1,35 +1,33 @@
-import random
-
-
 class AIQualityGate:
 
-    def evaluate(self, coverage, lint_errors, complexity):
+    def evaluate(self, coverage, fuzz_failures, mutation_score, step):
 
         score = 100
 
-        score -= max(0, 80 - coverage)
-        score -= lint_errors * 2
-        score -= complexity
+        if coverage < 60:
+            score -= 30
+        elif coverage < 80:
+            score -= 15
 
-        uncertainty = random.randint(-10, 10)
-        score += uncertainty
+        score -= fuzz_failures * 15
+
+        if mutation_score < 0.5:
+            score -= 30
+        elif mutation_score < 0.8:
+            score -= 10
+
+        score -= (step / 200) * 15
 
         if score >= 70:
-            return {
-                "decision": "PASS",
-                "score": score,
-                "confidence": "HIGH"
-            }
-
+            decision = "PASS"
         elif score >= 50:
-            return {
-                "decision": "WARNING",
-                "score": score,
-                "confidence": "MEDIUM"
-            }
+            decision = "REVIEW"
+        else:
+            decision = "FAIL"
 
-        return {
-            "decision": "FAIL",
-            "score": score,
-            "confidence": "LOW"
-        }
+        confidence = min(1.0, abs(score - 70) / 30)
+
+        if confidence < 0.35:
+            decision = "REVIEW"
+
+        return decision, score, confidence

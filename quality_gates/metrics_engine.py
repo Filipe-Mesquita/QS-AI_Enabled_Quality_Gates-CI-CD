@@ -1,19 +1,12 @@
-import json
 import pandas as pd
-
 
 class MetricsEngine:
 
     def __init__(self):
-        self.results = []
+        self.data = []
 
-    def add_result(self, result):
-        self.results.append(result)
+    def add(self, row):
+        self.data.append(row)
 
-    def save_json(self, filename="data/pipeline_results.json"):
-        with open(filename, "w") as f:
-            json.dump(self.results, f, indent=4)
-
-    def save_csv(self, filename="data/metrics.csv"):
-        df = pd.DataFrame(self.results)
-        df.to_csv(filename, index=False)
+    def save(self, path):
+        pd.DataFrame(self.data).to_json(path, orient="records")

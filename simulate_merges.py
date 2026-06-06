@@ -1,35 +1,84 @@
-import random
-from quality_gates.ai_gate import AIQualityGate
-from quality_gates.manual_override import ManualReviewer
+import json
+
+from quality_gates.ai_gate import AIGate
+from quality_gates.manual import ManualGate
+from quality_gates.override import apply_override
 from quality_gates.metrics_engine import MetricsEngine
 
+from tests.fuzz_tests.fuzz_testing import run_fuzz_tests
+from tests.mutation_tests.mutation_testing import run_mutation_tests
+from tests.unit_tests import run_unit_tests
 
-ai_gate = AIQualityGate()
-reviewer = ManualReviewer()
+
+# ---------------------------------------------------
+# CARREGA MERGES
+# ---------------------------------------------------
+
+with open("data/merges.json") as f:
+    merges = json.load(f)
+
+ai = AIGate()
+manual = ManualGate()
 metrics = MetricsEngine()
 
+results = []
 
-for merge_id in range(1, 101):
+# ---------------------------------------------------
+# PIPELINE PRINCIPAL
+# ---------------------------------------------------
 
-    coverage = random.randint(40, 100)
-    lint_errors = random.randint(0, 15)
-    complexity = random.randint(1, 20)
+for merge in merges:
 
-    ai_result = ai_gate.evaluate(
+    system = merge["system"]
+
+    # ---------------------------
+    # 1. UNIT TESTS → COVERAGE
+    # ---------------------------
+    coverage = run_unit_tests(system)
+
+    # ---------------------------
+    # 2. FUZZ TESTS
+    # ---------------------------
+    fuzz_failures = run_fuzz_tests(system)
+
+    # ---------------------------
+    # 3. MUTATION TESTS
+    # ---------------------------
+    mutation_score = run_mutation_tests(system)
+
+    # ---------------------------
+    # 4. AI GATE
+    # ---------------------------
+    ai_decision, score, confidence = ai.evaluate(
         coverage,
-        lint_errors,
-        complexity
+        fuzz_failures,
+        mutation_score,
+        system
     )
 
-    business_critical = random.choice([True, False])
+    # ---------------------------
+    # 5. HUMAN GATE
+    # ---------------------------
+    human_decision = manual.review(ai_decision, score)
 
-    human_result = reviewer.review(
-        ai_result, business_critical)
+    # ---------------------------
+    # 6. OVERRIDE
+    # ---------------------------
+    final_decision = apply_override(ai_decision, human_decision, score)
 
-    defect_leakage = random.choice([0, 1]) if ai_result["decision"] == "PASS" else 0
+    # ---------------------------
+    # 7. METRICS
+    # ---------------------------
+    metrics.add({
+        "system": system,
+        "coverage": coverage,
+        "fuzz_failures": fuzz_failures,
+        "mutation_score": mutation_score,
+        "ai_decision": ai_decision,
+        "human_decision": human_decision,
+        "final_decision": final_decision,
+        "merge_final_decision": merge["merge_final_decision"]
+    })
 
-    """
-    metrics.add_result({
-        "merge_id": merge_id,
-        "coverage": c
-    """
+metrics.save()
+
