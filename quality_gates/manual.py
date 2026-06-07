@@ -1,12 +1,16 @@
-def manual_gate(coverage, fuzz_failures, mutation_score):
+# =====================================================
+# Função Manual Gate (HUMAN-IN-THE-LOOP)
+# =====================================================
+# Simula decisão de um Humano.
+#
+# =====================================================
 
-    if coverage < 60:
+def manual_gate(risk_score):
+    
+    if risk_score > 70:
         return "REJECT"
 
-    if fuzz_failures > 0.2:
-        return "REJECT"
-
-    if mutation_score < 0.5:
-        return "REJECT"
+    if risk_score > 40:
+        return "REVIEW"
 
     return "APPROVE"

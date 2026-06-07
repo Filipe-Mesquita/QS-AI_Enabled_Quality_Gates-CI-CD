@@ -1,33 +1,34 @@
-class AIQualityGate:
+# =====================================================
+# AI Quality Gate
+# =====================================================
+# Este módulo simula uma decisão automática baseada no 
+# risco calculado a partir dos resultados dos testes.
+#
+#   Elementos obtidos a partir dos testes:
+# - Coverage (qualidade dos testes unitários)
+# - Fuzz Failures (robustez)
+# - Mutation Score (qualidade dos testes)
+# =====================================================
 
-    def evaluate(self, coverage, fuzz_failures, mutation_score, step):
 
-        score = 100
+class AIGate:
 
-        if coverage < 60:
-            score -= 30
-        elif coverage < 80:
-            score -= 15
+    def evaluate(self, risk_score, system):
 
-        score -= fuzz_failures * 15
+        score = 100 - risk_score
 
-        if mutation_score < 0.5:
-            score -= 30
-        elif mutation_score < 0.8:
-            score -= 10
-
-        score -= (step / 200) * 15
-
+        # Decisão
         if score >= 70:
             decision = "PASS"
+
         elif score >= 50:
             decision = "REVIEW"
+
         else:
             decision = "FAIL"
 
-        confidence = min(1.0, abs(score - 70) / 30)
-
-        if confidence < 0.35:
-            decision = "REVIEW"
+        # Confiança
+        confidence = abs(score - 70) / 30
+        confidence = min(1.0, confidence)
 
         return decision, score, confidence

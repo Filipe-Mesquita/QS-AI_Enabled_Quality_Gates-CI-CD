@@ -7,25 +7,29 @@ from app.calculator import divide
 
 
 # ---------------------------------------------------
-# FUZZ TESTING
+# Fuzz Testing
 # ---------------------------------------------------
-def run_fuzz():
+# Gera inputs aleatórios para encontrar falhas
+# inesperadas no sistema.
+#
+# OUTPUT:
+#   fuzz_failures → taxa de falhas (0 a 1)
+# =====================================================
+
+def run_fuzz_tests(system=None):
 
     failures = 0
     total = 300
 
     for _ in range(total):
 
-        # ---------------- CALCULATOR ----------------
+        # ---------------- Calculadora ----------------
         try:
-            divide(
-                random.randint(-1000, 1000),
-                random.randint(-1000, 1000)
-            )
+            divide(random.randint(-1000, 1000),random.randint(-1000, 1000))
         except:
             failures += 1
 
-        # ---------------- PASSWORDS ----------------
+        # ---------------- Validar Passwords ----------------
         try:
             pwd = ''.join(
                 random.choices(
@@ -41,7 +45,7 @@ def run_fuzz():
         except:
             failures += 1
 
-        # ---------------- LOAN ----------------
+        # ---------------- Aprovar Empréstimos ----------------
         try:
             evaluate_loan(
                 random.randint(1, 8000),

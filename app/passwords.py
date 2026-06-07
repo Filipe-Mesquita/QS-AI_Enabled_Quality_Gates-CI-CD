@@ -1,7 +1,38 @@
 import re
+from pathlib import Path
 
-# Função para validar a segurança de uma determinada password
-# A password recebe pontos se cumprir determinados requisitos
+
+# =====================================================
+# Extrair Passwords Conhecidas/Fracas
+# =====================================================
+
+file_passwords = Path("data/1000-most-common-passwords.txt")
+
+# Variável que vai conter as passwords
+weak_passwords = set()
+
+# Se o path para o ficheiro existir
+if file_passwords.exists():
+
+    # Abrir ficheiro
+    with open(file_passwords, "r", encoding="utf-8") as file:
+
+        for line in file:
+
+            password = line.strip().lower()
+
+            # Adicionar passwords ao set
+            if password:
+                weak_passwords.add(password)
+
+
+# =====================================================
+# Função para validar a segurança de uma password
+# =====================================================
+#   A password recebe pontos se cumprir determinados requisitos
+#
+# =====================================================
+
 def validate_password(password):
 
     # Variável que vai conter o score da password
@@ -36,13 +67,10 @@ def validate_password(password):
     # Ir buscara a lista de mais utilizadas !!
     weak_passwords = ["1234", "password"]
 
-    # Se a password recebida for uma das presentes na lista
+    # Se a password avaliada for uma das presentes no ficheiro
     # Reduzir a pontuação da mesma
-    for weak_password in weak_passwords:
-
-        if weak_password in password.lower():
-            score -= 2
-            break
+    if password.lower() in weak_passwords:
+        score -= 3
 
     # Password válida se atingir uma pontuação maior ou igual a 5
     return score >= 5

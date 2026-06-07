@@ -7,16 +7,23 @@ from app.loan import evaluate_loan
 
 
 # ---------------------------------------------------
-# UNIT TESTS DINÂMICOS POR SISTEMA
+# UNIT TESTS
 # ---------------------------------------------------
+# Simular execução de testes unitários através da 
+# geração de inputs.
+#
+# OUTPUT:
+#   coverage → valor entre 0 e 100
+# =====================================================
 
 def run_unit_tests(system):
 
     passed = 0
+    executed = 0
     total = 20  # número de testes gerados dinamicamente
 
     # =================================================
-    # CALCULATOR
+    # Calculadora
     # =================================================
     if system == "calculator":
 
@@ -25,17 +32,20 @@ def run_unit_tests(system):
             a = random.randint(-100, 100)
             b = random.randint(-100, 100)
 
-            # validações dinâmicas (oráculo simples)
+            executed += 1
             if add(a, b) == a + b:
                 passed += 1
 
+            executed += 1
             if subtract(a, b) == a - b:
                 passed += 1
 
+            executed += 1
             if multiply(a, b) == a * b:
                 passed += 1
 
             if b != 0:
+                executed += 1
                 try:
                     if divide(a, b) == a / b:
                         passed += 1
@@ -43,13 +53,14 @@ def run_unit_tests(system):
                     pass
 
     # =================================================
-    # PASSWORDS
+    # Validar Passwords
     # =================================================
+
     elif system == "passwords":
 
         for _ in range(total):
 
-            pwd = ''.join(
+            password = ''.join(
                 random.choices(
                     string.ascii_letters +
                     string.digits +
@@ -58,20 +69,20 @@ def run_unit_tests(system):
                 )
             )
 
-            result = validate_password(pwd)
+            executed += 1
+            result = validate_password(password)
 
-            # regra simples de referência (heurística)
-            expected = (
-                len(pwd) >= 8 and
-                any(c.isdigit() for c in pwd) and
-                any(c in "!@#$%^&*" for c in pwd)
-            )
+            has_length = len(password) >= 8
+            has_number = any(c.isdigit() for c in password)
+            has_symbol = any(c in "!@#$%^&*" for c in password)
+
+            expected = has_length and has_number and has_symbol
 
             if result == expected:
                 passed += 1
 
     # =================================================
-    # LOAN
+    # Aprovar Empréstimos
     # =================================================
     elif system == "loan":
 
@@ -83,10 +94,19 @@ def run_unit_tests(system):
             years = random.randint(0, 10)
             age = random.randint(18, 80)
 
+            executed += 1
             result = evaluate_loan(income, credit, debt, years, age)
 
-            # ORÁCULO SIMPLES (não ground truth real)
-            expected = "REJECT" if credit < 600 or debt > income * 0.5 else "APPROVE"
+            credit_risk = credit < 600
+            debt_risk = debt > (income * 0.5)
+
+            is_risky = credit_risk or debt_risk
+
+            if is_risky:
+                expected = "REJECT"
+            else:
+                expected = "APPROVE"
+
 
             if result == expected:
                 passed += 1
@@ -94,6 +114,6 @@ def run_unit_tests(system):
     # =================================================
     # COVERAGE SIMULADA DINÂMICA
     # =================================================
-    coverage = passed / (total * 4)
+    coverage = passed / executed if executed > 0 else 0
 
     return coverage
