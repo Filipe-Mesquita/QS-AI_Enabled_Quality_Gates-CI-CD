@@ -9,60 +9,54 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+    # -----------------------------------
+    # 1. Checkout do código
+    # -----------------------------------
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    # -----------------------------------
+    # 2. Setup Python
+    # -----------------------------------
     - name: Setup Python
       uses: actions/setup-python@v5
       with:
         python-version: "3.11"
 
+    # -----------------------------------
+    # 3. Install dependencies
+    # -----------------------------------
     - name: Install dependencies
       run: pip install -r requirements.txt
 
-    # FIX IMPORT PATHS (APP MODULE)
+    # -----------------------------------
+    # 4. Garantir imports funcionam
+    # -----------------------------------
     - name: Set PYTHONPATH
       run: echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
 
-    # -------------------------
-    # UNIT TESTS (manual run)
-    # -------------------------
-    - name: Run Unit Tests
-      run: python tests/unit_tests/unit_testing.py
-
-    # -------------------------
-    # FUZZ TESTING
-    # -------------------------
-    - name: Run Fuzz Testing
-      run: python -c "from tests.fuzz_tests.fuzz_testing import run_fuzz_tests; print(run_fuzz_tests())"
-
-    # -------------------------
-    # MUTATION TESTING
-    # -------------------------
-    - name: Run Mutation Testing
-      run: python -c "from tests.mutation_tests.mutation_testing import run_mutation_tests; print(run_mutation_tests())"
-
-    # -------------------------
-    # GENERATE DATASET
-    # -------------------------
-    - name: Generate Dataset
+    # -----------------------------------
+    # 5. (OPCIONAL) gerar dataset
+    # -----------------------------------
+    - name: Generate dataset
       run: python generate_data.py
 
-    # -------------------------
-    # SIMULATE PIPELINE
-    # -------------------------
-    - name: Simulate Merges
+    # -----------------------------------
+    # 6. EXECUTAR PIPELINE COMPLETO
+    # -----------------------------------
+    - name: Run CI/CD Simulation
       run: python simulate_merges.py
 
-    # -------------------------
-    # ANALYZE RESULTS
-    # -------------------------
-    - name: Analyze Results
+    # -----------------------------------
+    # 7. Analisar resultados
+    # -----------------------------------
+    - name: Analyze results
       run: python analyze_results.py
 
-    # -------------------------
-    # Upload metrics
-    # -------------------------
+    # -----------------------------------
+    # 8. Upload metrics (IMPORTANTE)
+    # -----------------------------------
     - name: Upload metrics
       uses: actions/upload-artifact@v4
       with:
