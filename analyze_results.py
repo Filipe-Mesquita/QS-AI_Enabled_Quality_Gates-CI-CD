@@ -28,7 +28,7 @@ overrides = 0
 # -----------------------------
 # Agregações de métricas
 # -----------------------------
-coverage_by_decision = {}
+pass_rate_by_decision = {}
 lint_by_decision = {}
 complexity_by_decision = {}
 fuzz_by_decision = {}
@@ -86,7 +86,7 @@ for d in data:
         leakage += 1
 
     # Agregação de métricas por decisão final
-    add_metric(coverage_by_decision, fd, d.get("coverage", 0))
+    add_metric(pass_rate_by_decision, fd, d.get("pass rate", 0))
     add_metric(lint_by_decision, fd, d.get("lint_errors", 0))
     add_metric(complexity_by_decision, fd, d.get("complexity", 0))
     add_metric(fuzz_by_decision, fd, d.get("fuzz_failures", 0))
@@ -119,7 +119,7 @@ print("\n--- COMPORTAMENTO DAS MÉTRICAS POR DECISÃO FINAL ---")
 
 for decision in final_decisions.keys():
     print(f"\n[Decisão: {decision}]")
-    print(f"  > Média Coverage:       {round(avg(coverage_by_decision.get(decision, [])), 3)}")
+    print(f"  > Média Pass Rate:       {round(avg(pass_rate_by_decision.get(decision, [])), 3)}")
     print(f"  > Média Erros Lint:     {round(avg(lint_by_decision.get(decision, [])), 3)}")
     print(f"  > Média Complexidade:   {round(avg(complexity_by_decision.get(decision, [])), 3)}")
     print(f"  > Média Falhas Fuzz:    {round(avg(fuzz_by_decision.get(decision, [])), 3)}")
