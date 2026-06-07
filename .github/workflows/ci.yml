@@ -9,54 +9,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-    # -----------------------------------
-    # 1. Checkout do código
-    # -----------------------------------
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    # -----------------------------------
-    # 2. Setup Python
-    # -----------------------------------
     - name: Setup Python
       uses: actions/setup-python@v5
       with:
         python-version: "3.11"
 
-    # -----------------------------------
-    # 3. Install dependencies
-    # -----------------------------------
     - name: Install dependencies
       run: pip install -r requirements.txt
 
-    # -----------------------------------
-    # 4. Garantir imports funcionam
-    # -----------------------------------
-    - name: Set PYTHONPATH
-      run: echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
-
-    # -----------------------------------
-    # 5. (OPCIONAL) gerar dataset
-    # -----------------------------------
-    - name: Generate dataset
+    # -------------------------
+    # 1. Generate dataset
+    # -------------------------
+    - name: Generate Dataset
       run: python generate_data.py
 
-    # -----------------------------------
-    # 6. EXECUTAR PIPELINE COMPLETO
-    # -----------------------------------
-    - name: Run CI/CD Simulation
+    # -------------------------
+    # 2. Run pipeline
+    # -------------------------
+    - name: Simulate Pipeline
       run: python simulate_merges.py
 
-    # -----------------------------------
-    # 7. Analisar resultados
-    # -----------------------------------
-    - name: Analyze results
+    # -------------------------
+    # 3. Analyze results
+    # -------------------------
+    - name: Analyze Results
       run: python analyze_results.py
 
-    # -----------------------------------
-    # 8. Upload metrics (IMPORTANTE)
-    # -----------------------------------
+    # -------------------------
+    # 4. Upload metrics artifact
+    # -------------------------
     - name: Upload metrics
       uses: actions/upload-artifact@v4
       with:
