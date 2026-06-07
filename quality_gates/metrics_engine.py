@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 
 # =====================================================
 # Classe Metrics Engine
@@ -21,5 +22,6 @@ class MetricsEngine:
     # Função para guardar todos os dados num ficheiro JSON (metrics.json)
     def save(self, path="data/metrics.json"):
         
+        os.makedirs(os.path.dirname(path), exist_ok=True)
         df = pd.DataFrame(self.data)
         df.to_json(path, orient="records", indent=2)

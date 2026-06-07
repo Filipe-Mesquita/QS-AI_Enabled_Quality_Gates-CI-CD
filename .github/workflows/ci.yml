@@ -21,25 +21,25 @@ jobs:
       run: pip install -r requirements.txt
 
     # -------------------------
-    # 1. Generate dataset
+    # Generate dataset
     # -------------------------
     - name: Generate Dataset
       run: python generate_data.py
 
     # -------------------------
-    # 2. Run pipeline
+    # Run pipeline
     # -------------------------
     - name: Simulate Pipeline
       run: python simulate_merges.py
 
     # -------------------------
-    # 3. Analyze results
+    # Analyze results
     # -------------------------
     - name: Analyze Results
       run: python analyze_results.py
 
     # -------------------------
-    # 4. Upload metrics artifact
+    # Upload metrics 
     # -------------------------
     - name: Upload metrics
       uses: actions/upload-artifact@v4

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI CI/CD Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<h1>AI-Enabled CI/CD Pipeline Dashboard</h1>
+
+<div id="kpis">
+    <div class="card" id="total"></div>
+    <div class="card" id="passRate"></div>
+    <div class="card" id="leakage"></div>
+    <div class="card" id="overrides"></div>
+</div>
+
+<canvas id="pipelineChart"></canvas>
+<canvas id="riskChart"></canvas>
+<canvas id="agreementChart"></canvas>
+
+<script src="app.js"></script>
+
+</body>
+</html>
