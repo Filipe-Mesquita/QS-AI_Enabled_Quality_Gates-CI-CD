@@ -9,6 +9,8 @@ from quality_gates.risk_engine import compute_risk
 from tests.fuzz_tests.fuzz_testing import run_fuzz_tests
 from tests.mutation_tests.mutation_testing import run_mutation_tests
 from tests.unit_tests.unit_testing import run_unit_tests
+from tests.lint_tests.lint_analysis import run_lint_analysis
+from tests.complexity_tests.complexity_analysis import run_complexity_analysis
 
 
 # ---------------------------------------------------
@@ -51,11 +53,19 @@ for merge in merges:
     # Aplicar mutation tests e obter o score para o sistema fornecido
     mutation_score = run_mutation_tests(system)
 
+    # Identifica problemas, boas práticas e possíveis bugs no código do sistema
+    # Estes erros representam dívida técnica e reduzem a qualidade do sistema 
+    lint_errors = run_lint_analysis(system)
+
+    # Mede a complexidade estrutural do código do sistema através do número de caminhos independentes em cada função
+    # Quanto maior o valor maior dificuladade de manutenção, teste
+    complexity = run_complexity_analysis(system)
+
     # -----------------------------
     # Risk Engine
     # -----------------------------
 
-    risk_score = compute_risk(coverage, fuzz_failures, mutation_score)
+    risk_score = compute_risk(coverage, fuzz_failures, mutation_score, lint_errors, complexity)
 
     # -----------------------------
     # AI Gate
@@ -89,6 +99,8 @@ for merge in merges:
     "coverage": coverage,
     "fuzz_failures": fuzz_failures,
     "mutation_score": mutation_score,
+    "lint_errors": lint_errors,
+    "complexity": complexity,
     "score": score,
     "confidence": confidence,
     "ai_decision": ai_decision,

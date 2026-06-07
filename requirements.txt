@@ -1,5 +1,6 @@
 pandas
-pytest
-pytest-cov
-matplotlib
 numpy
+matplotlib
+
+flake8
+radon
