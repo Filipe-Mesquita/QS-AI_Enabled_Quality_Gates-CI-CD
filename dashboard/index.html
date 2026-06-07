@@ -1,27 +1,128 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI CI/CD Dashboard</title>
+
     <link rel="stylesheet" href="style.css">
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
-<h1>AI-Enabled CI/CD Pipeline Dashboard</h1>
+    <header>
+        <h1>AI CI/CD Dashboard</h1>
+    </header>
 
-<div id="kpis">
-    <div class="card" id="total"></div>
-    <div class="card" id="passRate"></div>
-    <div class="card" id="leakage"></div>
-    <div class="card" id="overrides"></div>
-</div>
+    <section class="kpi-grid">
 
-<canvas id="pipelineChart"></canvas>
-<canvas id="riskChart"></canvas>
-<canvas id="agreementChart"></canvas>
+        <div class="kpi-card">
+            <h3>Total Merges</h3>
+            <p id="totalMerges">0</p>
+        </div>
 
-<script src="app.js"></script>
+        <div class="kpi-card">
+            <h3>Pass Rate</h3>
+            <p id="passRate">0%</p>
+        </div>
+
+        <div class="kpi-card">
+            <h3>Fail Rate</h3>
+            <p id="failRate">0%</p>
+        </div>
+
+        <div class="kpi-card">
+            <h3>Overrides</h3>
+            <p id="overrides">0</p>
+        </div>
+
+        <div class="kpi-card">
+            <h3>Avg Score</h3>
+            <p id="avgScore">0</p>
+        </div>
+
+        <div class="kpi-card">
+            <h3>Defect Leakage</h3>
+            <p id="defectLeakage">0</p>
+        </div>
+
+    </section>
+
+    <section class="charts">
+
+        <div class="chart-card">
+            <h2>AI Decisions</h2>
+            <canvas id="decisionChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h2>AI vs Human Decisions</h2>
+            <canvas id="comparisonChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h2>System Comparison</h2>
+            <canvas id="systemChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h2>Score Distribution</h2>
+            <canvas id="scoreChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h2>
+                AI Decision vs Final Decision
+            </h2>
+            <canvas id="rq1Chart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h2>
+                Override Frequency
+            </h2>
+            <canvas id="overrideChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h2>Risk Distribution</h2>
+            <canvas id="riskChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h2>
+                False Decisions
+            </h2>
+            <canvas id="falseDecisionChart"></canvas>
+        </div>
+
+    </section>
+
+    <section class="table-section">
+
+        <h2>Metrics Summary</h2>
+
+        <table id="summaryTable">
+            <thead>
+                <tr>
+                    <th>System</th>
+                    <th>Coverage</th>
+                    <th>Mutation Score</th>
+                    <th>Fuzz Failures</th>
+                    <th>Average Score</th>
+                </tr>
+            </thead>
+
+            <tbody></tbody>
+        </table>
+
+    </section>
+
+    <script src="app.js"></script>
 
 </body>
+
 </html>
