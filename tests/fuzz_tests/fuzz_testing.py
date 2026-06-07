@@ -13,7 +13,7 @@ def run_fuzz_tests(system):
     failures = 0
     total = 200
 
-    # Lista de inputs malformados e extremos comuns em Fuzz Testing
+    # Lista de inputs errado e extremos comuns 
     corrupt_inputs = [
         None,             # Valor nulo
         "texto_invalido", # Tipo de dados errado (String em vez de Int)
@@ -26,21 +26,20 @@ def run_fuzz_tests(system):
 
     for _ in range(total):
         
-        # Decidimos se enviamos um dado malformado (25% de hipótese) ou aleatório normal (75%)
+        # Decidir enviar um dado errado (25% de hipótese) ou aleatório normal (75%)
         use_corrupt = random.random() < 0.25
 
         # =====================
         # Calculadora
         # =====================
         if system == "calculator":
-            # Se for corrupto, escolhe um valor da lista perigosa. Se não, escolhe o aleatório normal.
+            
             arg1 = random.choice(corrupt_inputs) if use_corrupt else random.randint(-1000, 1000)
             arg2 = random.choice(corrupt_inputs) if use_corrupt else random.randint(-1000, 1000)
             
             try:
                 divide(arg1, arg2)
             except Exception:
-                # Se a tua função não tratar tipos errados ou None, vai disparar a exceção e contar como falha!
                 failures += 1
 
         # =====================
@@ -48,10 +47,10 @@ def run_fuzz_tests(system):
         # =====================
         elif system == "passwords":
             if use_corrupt:
-                # Passa tipos completamente errados em vez de strings (ex: passar um dicionário ou None)
+
                 pwd = random.choice([None, True, 12345, [], {}])
             else:
-                # Gera as strings aleatórias normais (incluindo tamanho 0 e caracteres estranhos)
+
                 pwd = ''.join(random.choices(
                     string.ascii_letters + string.digits + string.punctuation,
                     k=random.randint(0, 50)
@@ -67,14 +66,14 @@ def run_fuzz_tests(system):
         # =====================
         elif system == "loan":
             if use_corrupt:
-                # Força o sistema a receber lixo num dos parâmetros críticos
+
                 income = random.choice(corrupt_inputs)
                 score = random.choice(corrupt_inputs)
                 dti = random.choice(corrupt_inputs)
                 years = random.choice(corrupt_inputs)
                 age = random.choice(corrupt_inputs)
             else:
-                # Valores normais
+
                 income = random.randint(1, 8000)
                 score = random.randint(300, 900)
                 dti = random.randint(0, 6000)

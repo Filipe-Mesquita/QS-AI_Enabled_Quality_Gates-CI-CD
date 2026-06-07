@@ -86,7 +86,7 @@ for d in data:
         leakage += 1
 
     # Agregação de métricas por decisão final
-    add_metric(pass_rate_by_decision, fd, d.get("pass rate", 0))
+    add_metric(pass_rate_by_decision, fd, d.get("pass_rate", 0))
     add_metric(lint_by_decision, fd, d.get("lint_errors", 0))
     add_metric(complexity_by_decision, fd, d.get("complexity", 0))
     add_metric(fuzz_by_decision, fd, d.get("fuzz_failures", 0))
