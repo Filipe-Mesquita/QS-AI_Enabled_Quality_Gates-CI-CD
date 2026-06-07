@@ -9,74 +9,60 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # -------------------------------------------------
-    # 1. Checkout do repositório
-    # -------------------------------------------------
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    # -------------------------------------------------
-    # 2. Setup Python
-    # -------------------------------------------------
     - name: Setup Python
       uses: actions/setup-python@v5
       with:
         python-version: "3.11"
 
-    # -------------------------------------------------
-    # 3. Cache pip
-    # -------------------------------------------------
-    - name: Cache pip
-      uses: actions/cache@v4
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-
-    # -------------------------------------------------
-    # 4. Instalar dependências
-    # -------------------------------------------------
     - name: Install dependencies
       run: pip install -r requirements.txt
 
-    # -------------------------------------------------
-    # 5. UNIT TESTS (execução manual)
-    # -------------------------------------------------
-    - name: Run Unit Tests (manual system)
+    # 🔴 FIX IMPORT PATHS (APP MODULE)
+    - name: Set PYTHONPATH
+      run: echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
+
+    # -------------------------
+    # UNIT TESTS (manual run)
+    # -------------------------
+    - name: Run Unit Tests
       run: python tests/unit_tests/unit_testing.py
 
-    # -------------------------------------------------
-    # 6. FUZZ TESTING
-    # -------------------------------------------------
+    # -------------------------
+    # FUZZ TESTING
+    # -------------------------
     - name: Run Fuzz Testing
-      run: python tests/fuzz_tests/fuzz_testing.py
+      run: python -c "from tests.fuzz_tests.fuzz_testing import run_fuzz_tests; print(run_fuzz_tests())"
 
-    # -------------------------------------------------
-    # 7. MUTATION TESTING
-    # -------------------------------------------------
+    # -------------------------
+    # MUTATION TESTING
+    # -------------------------
     - name: Run Mutation Testing
-      run: python tests/mutation_tests/mutation_testing.py
+      run: python -c "from tests.mutation_tests.mutation_testing import run_mutation_tests; print(run_mutation_tests())"
 
-    # -------------------------------------------------
-    # 8. GERAR DATASET
-    # -------------------------------------------------
+    # -------------------------
+    # GENERATE DATASET
+    # -------------------------
     - name: Generate Dataset
       run: python generate_data.py
 
-    # -------------------------------------------------
-    # 9. SIMULAÇÃO DO PIPELINE CI/CD
-    # -------------------------------------------------
-    - name: Simulate CI/CD Pipeline
+    # -------------------------
+    # SIMULATE PIPELINE
+    # -------------------------
+    - name: Simulate Merges
       run: python simulate_merges.py
 
-    # -------------------------------------------------
-    # 10. ANÁLISE FINAL DOS RESULTADOS
-    # -------------------------------------------------
+    # -------------------------
+    # ANALYZE RESULTS
+    # -------------------------
     - name: Analyze Results
       run: python analyze_results.py
 
-    # -------------------------------------------------
-    # 11. UPLOAD DAS MÉTRICAS (ARTIFACTS)
-    # -------------------------------------------------
+    # -------------------------
+    # Upload metrics
+    # -------------------------
     - name: Upload metrics
       uses: actions/upload-artifact@v4
       with:
