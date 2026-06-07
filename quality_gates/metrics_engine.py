@@ -6,7 +6,6 @@ import os
 # =====================================================
 # Responsável por armazenar todos os resultados do
 # pipeline CI/CD simulado.
-#
 # =====================================================
 
 class MetricsEngine:
