@@ -21,7 +21,7 @@ fetch("../data/metrics.json")
         const defectLeakage = data.reduce((count, item) => {
 
             if (
-                item.final_decision === "FAIL" &&
+                item.final_decision === "REJECT" &&
                 item.merge_final_decision === "GOOD"
             ) {
                 return count + 1;
@@ -37,7 +37,7 @@ fetch("../data/metrics.json")
         const ai_approves =
             data.filter(x => x.ai_decision === "APPROVE").length;
         const ai_fails =
-            data.filter(x => x.ai_decision === "FAIL").length;
+            data.filter(x => x.ai_decision === "REJECT").length;
         const ai_reviews =
             data.filter(x => x.ai_decision === "REVIEW").length;
 
@@ -63,7 +63,7 @@ fetch("../data/metrics.json")
             {
                 type: "pie",
                 data: {
-                    labels: ["APPROVE", "REVIEW", "FAIL"],
+                    labels: ["APPROVE", "REVIEW", "REJECT"],
                     datasets: [{
                         data: [ai_approves, ai_reviews, ai_fails]
                     }]
@@ -88,14 +88,14 @@ fetch("../data/metrics.json")
             {
                 type: "bar",
                 data: {
-                    labels: ["APPROVE", "REVIEW", "FAIL"],
+                    labels: ["APPROVE", "REVIEW", "REJECT"],
                     datasets: [
                         {
                             label: "AI",
                             data: [
                                 aiCounts.APPROVE || 0,
                                 aiCounts.REVIEW || 0,
-                                aiCounts.FAIL || 0
+                                aiCounts.REJECT || 0
                             ]
                         },
                         {
@@ -103,7 +103,7 @@ fetch("../data/metrics.json")
                             data: [
                                 humanCounts.APPROVE || 0,
                                 humanCounts.REVIEW || 0,
-                                humanCounts.FAIL || 0
+                                humanCounts.REJECT || 0
                             ]
                         }
                     ]
@@ -137,6 +137,20 @@ fetch("../data/metrics.json")
                     systems[s].coverage.length
             );
 
+        const fuzzData =
+            labels.map(
+                s =>
+                    systems[s].fuzz.reduce((a, b) => a + b, 0) /
+                    systems[s].fuzz.length
+            );
+
+        const mutationData =
+            labels.map(
+                s =>
+                    systems[s].mutation.reduce((a, b) => a + b, 0) /
+                    systems[s].mutation.length
+            );
+
         new Chart(
             document.getElementById("systemChart"),
             {
@@ -147,32 +161,24 @@ fetch("../data/metrics.json")
                         {
                             label: "Coverage",
                             data: coverageData
-                        }
-                    ]
-                }
-            }
-        );
-
-        new Chart(
-            document.getElementById("scoreChart"),
-            {
-                type: "line",
-                data: {
-                    labels: data.map((_, i) => i + 1),
-                    datasets: [
+                        },
                         {
-                            label: "Score",
-                            data: data.map(x => x.score)
-                        }
+                            label: "Fuzz Failures",
+                            data: fuzzData
+                        },
+                        {
+                            label: "Mutation Score",
+                            data: mutationData
+                        },
                     ]
                 }
             }
         );
 
         const rq1 = {
-            APPROVE: { APPROVE: 0, REVIEW: 0, FAIL: 0 },
-            REVIEW: { APPROVE: 0, REVIEW: 0, FAIL: 0 },
-            FAIL: { APPROVE: 0, REVIEW: 0, FAIL: 0 }
+            APPROVE: { APPROVE: 0, REVIEW: 0, REJECT: 0 },
+            REVIEW: { APPROVE: 0, REVIEW: 0, REJECT: 0 },
+            REJECT: { APPROVE: 0, REVIEW: 0, REJECT: 0 }
         };
 
         data.forEach(item => {
@@ -184,14 +190,14 @@ fetch("../data/metrics.json")
             {
                 type: "bar",
                 data: {
-                    labels: ["APPROVE", "REVIEW", "FAIL"],
+                    labels: ["APPROVE", "REVIEW", "REJECT"],
                     datasets: [
                         {
                             label: "AI APPROVE",
                             data: [
                                 rq1.APPROVE.APPROVE,
                                 rq1.APPROVE.REVIEW,
-                                rq1.APPROVE.FAIL
+                                rq1.APPROVE.REJECT
                             ]
                         },
                         {
@@ -199,15 +205,15 @@ fetch("../data/metrics.json")
                             data: [
                                 rq1.REVIEW.APPROVE,
                                 rq1.REVIEW.REVIEW,
-                                rq1.REVIEW.FAIL
+                                rq1.REVIEW.REJECT
                             ]
                         },
                         {
-                            label: "AI FAIL",
+                            label: "AI REJECT",
                             data: [
-                                rq1.FAIL.APPROVE,
-                                rq1.FAIL.REVIEW,
-                                rq1.FAIL.FAIL
+                                rq1.REJECT.APPROVE,
+                                rq1.REJECT.REVIEW,
+                                rq1.REJECT.REJECT
                             ]
                         }
                     ]
@@ -316,7 +322,7 @@ fetch("../data/metrics.json")
         const falseNegative =
             data.filter(
                 x =>
-                    x.final_decision === "FAIL"
+                    x.final_decision === "REJECT"
                     &&
                     x.merge_final_decision === "GOOD"
             ).length;

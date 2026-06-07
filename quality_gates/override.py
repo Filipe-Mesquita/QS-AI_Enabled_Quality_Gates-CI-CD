@@ -5,8 +5,6 @@
 #
 # =====================================================
 
-
-# teste teste teste
 def apply_override(ai_decision, manual_decision):
 
     # IA rejeita mas Humano assume o risco e aprova
