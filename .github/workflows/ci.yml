@@ -1,1 +1,84 @@
+name: AI-Enabled CI/CD Pipeline
 
+on:
+  push:
+  pull_request:
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+    # -------------------------------------------------
+    # 1. Checkout do repositório
+    # -------------------------------------------------
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # -------------------------------------------------
+    # 2. Setup Python
+    # -------------------------------------------------
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    # -------------------------------------------------
+    # 3. Cache pip
+    # -------------------------------------------------
+    - name: Cache pip
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+
+    # -------------------------------------------------
+    # 4. Instalar dependências
+    # -------------------------------------------------
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    # -------------------------------------------------
+    # 5. UNIT TESTS (execução manual)
+    # -------------------------------------------------
+    - name: Run Unit Tests (manual system)
+      run: python tests/unit_tests/unit_testing.py
+
+    # -------------------------------------------------
+    # 6. FUZZ TESTING
+    # -------------------------------------------------
+    - name: Run Fuzz Testing
+      run: python tests/fuzz_tests/fuzz_testing.py
+
+    # -------------------------------------------------
+    # 7. MUTATION TESTING
+    # -------------------------------------------------
+    - name: Run Mutation Testing
+      run: python tests/mutation_tests/mutation_testing.py
+
+    # -------------------------------------------------
+    # 8. GERAR DATASET
+    # -------------------------------------------------
+    - name: Generate Dataset
+      run: python generate_data.py
+
+    # -------------------------------------------------
+    # 9. SIMULAÇÃO DO PIPELINE CI/CD
+    # -------------------------------------------------
+    - name: Simulate CI/CD Pipeline
+      run: python simulate_merges.py
+
+    # -------------------------------------------------
+    # 10. ANÁLISE FINAL DOS RESULTADOS
+    # -------------------------------------------------
+    - name: Analyze Results
+      run: python analyze_results.py
+
+    # -------------------------------------------------
+    # 11. UPLOAD DAS MÉTRICAS (ARTIFACTS)
+    # -------------------------------------------------
+    - name: Upload metrics
+      uses: actions/upload-artifact@v4
+      with:
+        name: metrics
+        path: data/metrics.json
