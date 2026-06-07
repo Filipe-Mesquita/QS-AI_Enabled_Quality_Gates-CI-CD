@@ -20,7 +20,7 @@ jobs:
     - name: Install dependencies
       run: pip install -r requirements.txt
 
-    # 🔴 FIX IMPORT PATHS (APP MODULE)
+    # FIX IMPORT PATHS (APP MODULE)
     - name: Set PYTHONPATH
       run: echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
 
