@@ -8,7 +8,7 @@ from quality_gates.risk_engine import compute_risk
 
 from tests.fuzz_tests.fuzz_testing import run_fuzz_tests
 from tests.mutation_tests.mutation_testing import run_mutation_tests
-from tests.unit_tests import run_unit_tests
+from tests.unit_tests.unit_testing import run_unit_tests
 
 
 # ---------------------------------------------------
