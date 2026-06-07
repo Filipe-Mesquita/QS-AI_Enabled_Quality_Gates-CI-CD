@@ -5,10 +5,10 @@ fetch("../data/metrics.json")
         const total = data.length;
 
         const passes =
-            data.filter(x => x.merge_final_decision === "GOOD").length;
+            data.filter(x => x.final_decision === "APPROVE").length;
 
         const fails =
-            data.filter(x => x.merge_final_decision === "BAD").length;
+            data.filter(x => x.final_decision === "REJECT").length;
 
         const reviews =
             data.filter(x => x.final_decision === "REVIEW").length;
@@ -117,24 +117,24 @@ fetch("../data/metrics.json")
 
             if (!systems[item.system]) {
                 systems[item.system] = {
-                    coverage: [],
+                    pass_rate: [],
                     mutation: [],
                     fuzz: []
                 };
             }
 
-            systems[item.system].coverage.push(item.coverage);
+            systems[item.system].pass_rate.push(item.pass_rate);
             systems[item.system].mutation.push(item.mutation_score);
             systems[item.system].fuzz.push(item.fuzz_failures);
         });
 
         const labels = Object.keys(systems);
 
-        const coverageData =
+        const pass_rateData =
             labels.map(
                 s =>
-                    systems[s].coverage.reduce((a, b) => a + b, 0) /
-                    systems[s].coverage.length
+                    systems[s].pass_rate.reduce((a, b) => a + b, 0) /
+                    systems[s].pass_rate.length
             );
 
         const fuzzData =
@@ -159,8 +159,8 @@ fetch("../data/metrics.json")
                     labels: labels,
                     datasets: [
                         {
-                            label: "Coverage",
-                            data: coverageData
+                            label: "Pass Rate",
+                            data: pass_rateData
                         },
                         {
                             label: "Fuzz Failures",
@@ -180,40 +180,62 @@ fetch("../data/metrics.json")
             REVIEW: { APPROVE: 0, REVIEW: 0, REJECT: 0 },
             REJECT: { APPROVE: 0, REVIEW: 0, REJECT: 0 }
         };
-
+        
         data.forEach(item => {
 
-            rq1[item.ai_decision][item.final_decision]++;
+            let final = item.final_decision;
+
+            // normalizar overrides
+            if (final === "OVERRIDE_APPROVE") final = "APPROVE";
+            if (final === "OVERRIDE_REJECT") final = "REJECT";
+
+            rq1[item.ai_decision][final]++;
+
+            console.log("AI decision:", item.ai_decision);
+            console.log("FINAL decision (normalized):", final);
         });
+
+
+
+        console.log("Approve approve:", rq1.APPROVE.APPROVE);
+        console.log("approve review:", rq1.APPROVE.REVIEW);
+        console.log("approve reject:", rq1.APPROVE.REJECT);
+        console.log("review approve:", rq1.REVIEW.APPROVE);
+        console.log("review review:", rq1.REVIEW.REVIEW);
+        console.log("review reject:", rq1.REVIEW.REJECT);
+        console.log("reject approve:", rq1.REJECT.APPROVE);
+        console.log("reject reeview:", rq1.REJECT.REVIEW);
+        console.log("reject reject:", rq1.REJECT.REJECT);
+
         new Chart(
             document.getElementById("rq1Chart"),
             {
                 type: "bar",
                 data: {
-                    labels: ["APPROVE", "REVIEW", "REJECT"],
+                    labels: ["AI: APPROVE", "AI: REVIEW", "AI: REJECT"],
                     datasets: [
                         {
-                            label: "AI APPROVE",
+                            label: "FINAL: APPROVE",
                             data: [
-                                rq1.APPROVE.APPROVE,
-                                rq1.APPROVE.REVIEW,
-                                rq1.APPROVE.REJECT
+                                rq1.APPROVE.APPROVE || 0,
+                                rq1.APPROVE.REVIEW || 0,
+                                rq1.APPROVE.REJECT || 0
                             ]
                         },
                         {
-                            label: "AI REVIEW",
+                            label: "FINAL: REVIEW",
                             data: [
-                                rq1.REVIEW.APPROVE,
-                                rq1.REVIEW.REVIEW,
-                                rq1.REVIEW.REJECT
+                                rq1.REVIEW.APPROVE || 0,
+                                rq1.REVIEW.REVIEW || 0,
+                                rq1.REVIEW.REJECT || 0
                             ]
                         },
                         {
-                            label: "AI REJECT",
+                            label: "FINAL: REJECT",
                             data: [
-                                rq1.REJECT.APPROVE,
-                                rq1.REJECT.REVIEW,
-                                rq1.REJECT.REJECT
+                                rq1.REJECT.APPROVE || 0,
+                                rq1.REJECT.REVIEW || 0,
+                                rq1.REJECT.REJECT || 0
                             ]
                         }
                     ]
@@ -245,8 +267,8 @@ fetch("../data/metrics.json")
                 type: "pie",
                 data: {
                     labels: [
-                        "OVERRIDE_APPROVE",
-                        "OVERRIDE_REJECT",
+                        "OVERRIDE_TO_APPROVE",
+                        "OVERRIDE_TO_REJECT",
                         "NO_OVERRIDE"
                     ],
                     datasets: [{
@@ -327,6 +349,12 @@ fetch("../data/metrics.json")
                     x.merge_final_decision === "GOOD"
             ).length;
 
+        console.log("False Positive:", falsePositive);
+        console.log("False Negative:", falseNegative);
+
+        const noFalseCases =
+            (falsePositive === 0 && falseNegative === 0) ? 100 : 0;
+
         new Chart(
             document.getElementById("falseDecisionChart"),
             {
@@ -334,12 +362,14 @@ fetch("../data/metrics.json")
                 data: {
                     labels: [
                         "False Positive",
-                        "False Negative"
+                        "False Negative",
+                        "No False Cases"
                     ],
                     datasets: [{
                         data: [
                             falsePositive,
-                            falseNegative
+                            falseNegative,
+                            noFalseCases
                         ]
                     }]
                 }
@@ -354,8 +384,8 @@ fetch("../data/metrics.json")
             const entries =
                 data.filter(x => x.system === system);
 
-            const avgCoverage =
-                entries.reduce((s, x) => s + x.coverage, 0)
+            const avgPassRate =
+                entries.reduce((s, x) => s + x.pass_rate, 0)
                 / entries.length;
 
             const avgMutation =
@@ -373,7 +403,7 @@ fetch("../data/metrics.json")
             tbody.innerHTML += `
         <tr>
             <td>${system}</td>
-            <td>${avgCoverage.toFixed(2)}</td>
+            <td>${avgPassRate.toFixed(2)}</td>
             <td>${avgMutation.toFixed(2)}</td>
             <td>${avgFuzz.toFixed(2)}</td>
             <td>${avgSystemScore.toFixed(2)}</td>

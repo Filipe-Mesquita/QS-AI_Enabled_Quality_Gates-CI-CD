@@ -25,12 +25,12 @@
         </div>
 
         <div class="kpi-card">
-            <h3>Pass Rate</h3>
+            <h3>APPROVE Rate</h3>
             <p id="passRate">0%</p>
         </div>
 
         <div class="kpi-card">
-            <h3>Fail Rate</h3>
+            <h3>REJECT Rate</h3>
             <p id="failRate">0%</p>
         </div>
 
@@ -70,17 +70,18 @@
         
         <div class="chart-card">
             <h2>
+                Override Frequency
+            </h2>
+            <canvas id="overrideChart"></canvas>
+        </div>
+        
+        <div class="chart-card">
+            <h2>
                 AI Decision vs Final Decision
             </h2>
             <canvas id="rq1Chart"></canvas>
         </div>
 
-        <div class="chart-card">
-            <h2>
-                Override Frequency
-            </h2>
-            <canvas id="overrideChart"></canvas>
-        </div>
 
         <div class="chart-card">
             <h2>Risk Distribution</h2>
@@ -93,6 +94,7 @@
             </h2>
             <canvas id="falseDecisionChart"></canvas>
         </div>
+        
 
     </section>
 
@@ -104,7 +106,7 @@
             <thead>
                 <tr>
                     <th>System</th>
-                    <th>Coverage</th>
+                    <th>Pass Rate</th>
                     <th>Mutation Score</th>
                     <th>Fuzz Failures</th>
                     <th>Average Score</th>
