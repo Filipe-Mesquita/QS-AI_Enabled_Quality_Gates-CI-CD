@@ -16,7 +16,7 @@ from app.calculator import divide
 #   fuzz_failures → taxa de falhas (0 a 1)
 # =====================================================
 
-def run_fuzz_tests(system=None):
+def run_fuzz_tests():
 
     failures = 0
     total = 300

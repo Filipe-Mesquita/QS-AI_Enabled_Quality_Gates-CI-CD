@@ -46,10 +46,10 @@ for merge in merges:
     coverage = run_unit_tests(system)
 
     # Aplicar fuzz tests e obter os failures para o sistema fornecido
-    fuzz_failures = run_fuzz_tests(system)
+    fuzz_failures = run_fuzz_tests()
 
     # Aplicar mutation tests e obter o score para o sistema fornecido
-    mutation_score = run_mutation_tests(system)
+    mutation_score = run_mutation_tests()
 
     # -----------------------------
     # Risk Engine
