@@ -70,7 +70,8 @@ for d in data:
         overrides += 1
 
     # defect leakage
-    if fd == "FAIL" and d.get("merge_final_decision") == "GOOD":
+    # O pipeline aprovou (final_decision), mas o merge era na verdade mau (BAD)
+    if fd == "APPROVE" and d.get("merge_final_decision") == "BAD":
         leakage += 1
 
     # métricas por decisão

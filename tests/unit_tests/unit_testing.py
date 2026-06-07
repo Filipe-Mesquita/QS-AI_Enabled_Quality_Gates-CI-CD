@@ -112,7 +112,7 @@ def run_unit_tests(system):
                 passed += 1
 
     # =================================================
-    # COVERAGE SIMULADA DINÂMICA
+    # COVERAGE SIMULADA 
     # =================================================
     coverage = passed / executed if executed > 0 else 0
 

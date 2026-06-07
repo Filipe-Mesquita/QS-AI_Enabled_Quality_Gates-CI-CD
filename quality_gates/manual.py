@@ -7,7 +7,7 @@
 
 def manual_gate(risk_score):
     
-    if risk_score > 70:
+    if risk_score > 75:
         return "REJECT"
 
     if risk_score > 40:

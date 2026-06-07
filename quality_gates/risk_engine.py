@@ -14,9 +14,9 @@ def compute_risk(coverage, fuzz_failures, mutation_score, lint_errors, complexit
     # -----------------------------
 
     # Baixa cobertura indica testes insuficientes
-    if coverage < 60:
+    if coverage < 0.60:
         risk += 20
-    elif coverage < 80:
+    elif coverage < 0.80:
         risk += 10
 
     # -----------------------------

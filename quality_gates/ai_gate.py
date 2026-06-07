@@ -19,7 +19,7 @@ class AIGate:
 
         # Decisão
         if score >= 70:
-            decision = "PASS"
+            decision = "APPROVE"
 
         elif score >= 50:
             decision = "REVIEW"
@@ -27,8 +27,19 @@ class AIGate:
         else:
             decision = "FAIL"
 
-        # Confiança
-        confidence = abs(score - 70) / 30
-        confidence = min(1.0, confidence)
+
+
+        if decision == "REVIEW":
+            confidence = abs(score - 57.5) / 12.5
+        
+        elif decision == "APPROVE":
+            confidence = (score - 70) / 30
+        
+        else:
+            confidence = (45 - score) / 45
+
+        # Garantir que a confiança fica entre 0.0 e 1.0
+        confidence = max(0.0, min(1.0, round(confidence, 2)))
+
 
         return decision, score, confidence

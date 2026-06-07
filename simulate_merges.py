@@ -1,4 +1,5 @@
 import json
+import random
 
 from quality_gates.ai_gate import AIGate
 from quality_gates.manual import manual_gate
@@ -12,21 +13,13 @@ from tests.unit_tests.unit_testing import run_unit_tests
 from tests.lint_tests.lint_analysis import run_lint_analysis
 from tests.complexity_tests.complexity_analysis import run_complexity_analysis
 
-
 # ---------------------------------------------------
 # Extrair Merges Criados do Ficheiro "merges.json"
 # ---------------------------------------------------
-# Este ficheiro contém merges gerados pelo ficheiro
-# generate_data.py com:
-# - system (calculator / passwords / loan)
-# - merge_final_decision (GOOD / BAD)
-# =====================================================
-
-# Abrir ficheiro e extrair os merges criados para a variável merges
 with open("data/merges.json") as f:
     merges = json.load(f)
 
-# Instanciar componentes do Pipelone
+# Instanciar componentes do Pipeline
 ai = AIGate()
 metrics = MetricsEngine()
 
@@ -34,80 +27,77 @@ metrics = MetricsEngine()
 # PIPELINE
 # ---------------------------------------------------
 
-# Iterar sobre os merges extraidos
+# Iterar sobre os merges extraídos
 for merge in merges:
 
     # Extrair o sistema/módulo com o qual o merge atual está relacionado
     system = merge["system"]
-
-    # -----------------------------
-    # Tests
-    # -----------------------------
     
-    # Aplicar testes unitários ao sistema fornecido e obter a coverage
-    coverage = run_unit_tests(system)
+    # Extrair a influência do merge (Se devia ser um merge BOM ou MAU)
+    merge_decision = merge["merge_final_decision"]
 
-    # Aplicar fuzz tests e obter os failures para o sistema fornecido
-    fuzz_failures = run_fuzz_tests(system)
+    # ---------------------------------------------------
+    # Testes e Injeção de Falhas
+    # ---------------------------------------------------
+    if merge_decision == "BAD":
 
-    # Aplicar mutation tests e obter o score para o sistema fornecido
-    mutation_score = run_mutation_tests(system)
+        # Simulação de código defeituoso (com erros ou bugs)
+        # Geramos métricas más para simular um Pull Request com bugs/código fraco
+        coverage = random.uniform(0.35, 0.60)        
+        fuzz_failures = random.uniform(0.15, 0.45)   
+        mutation_score = random.uniform(0.20, 0.50)  
+        lint_errors = random.randint(10, 28)         
+        complexity = random.uniform(14.0, 24.0)      
+    else:
 
-    # Identifica problemas, boas práticas e possíveis bugs no código do sistema
-    # Estes erros representam dívida técnica e reduzem a qualidade do sistema 
-    lint_errors = run_lint_analysis(system)
-
-    # Mede a complexidade estrutural do código do sistema através do número de caminhos independentes em cada função
-    # Quanto maior o valor maior dificuladade de manutenção, teste
-    complexity = run_complexity_analysis(system)
+        # Simulação de código sem erros nem bugs 
+        coverage = run_unit_tests(system)
+        fuzz_failures = run_fuzz_tests(system)
+        mutation_score = run_mutation_tests(system)
+        lint_errors = run_lint_analysis(system)
+        complexity = run_complexity_analysis(system)
 
     # -----------------------------
     # Risk Engine
     # -----------------------------
-
+    # É calculado o risco com base nas métricas 
     risk_score = compute_risk(coverage, fuzz_failures, mutation_score, lint_errors, complexity)
 
     # -----------------------------
     # AI Gate
     # -----------------------------
-
-    # Simular decisão da IA fornecendo-lhe o risco e o sistema
-    # Obtemos a decisão da IA a confiança nessa decisão e o score
+    # Avaliação da IA baseada no risco. Devolve decisão, score e confiança.
     ai_decision, score, confidence = ai.evaluate(risk_score, system)
-
 
     # -----------------------------
     # Human Review
     # -----------------------------
-
-    # Simular decisão humana
+    # Simular a decisão do humano sobre o mesmo risco
     human_decision = manual_gate(risk_score)
 
     # -----------------------------
-    # Override
+    # Override System
     # -----------------------------
-
-    # Aplicar decisão final em caso de contradição entre a IA e o Humano
+    # Resolve conflitos usando a matriz de decisão corrigida
     final_decision = apply_override(ai_decision, human_decision)
 
     # -----------------------------
-    # Métricas obtidas
+    # Registo de Métricas
     # -----------------------------
- 
     metrics.add({
-    "system": system,
-    "coverage": coverage,
-    "fuzz_failures": fuzz_failures,
-    "mutation_score": mutation_score,
-    "lint_errors": lint_errors,
-    "complexity": complexity,
-    "score": score,
-    "confidence": confidence,
-    "ai_decision": ai_decision,
-    "human_decision": human_decision,
-    "final_decision": final_decision,
-    "merge_final_decision": merge["merge_final_decision"]
+        "system": system,
+        "coverage": coverage,
+        "fuzz_failures": fuzz_failures,
+        "mutation_score": mutation_score,
+        "lint_errors": lint_errors,
+        "complexity": complexity,
+        "score": score,
+        "confidence": confidence,
+        "ai_decision": ai_decision,
+        "human_decision": human_decision,
+        "final_decision": final_decision,
+        "merge_final_decision": merge_decision
     })
 
+# Guardar os resultados em data/metrics.json
 metrics.save()
-
