@@ -6,7 +6,7 @@ from app.loan import evaluate_loan
 from app.calculator import divide
 
 # ---------------------------------------------------
-# Fuzz Testing Corrigido
+# Fuzz Testing 
 # ---------------------------------------------------
 def run_fuzz_tests(system):
 
