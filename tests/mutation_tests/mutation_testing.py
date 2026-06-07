@@ -2,79 +2,119 @@ from app.calculator import add, divide
 from app.passwords import validate_password
 from app.loan import evaluate_loan
 
+# =====================================================
+# 1. TESTES UNITÁRIOS SIMULADOS
+# =====================================================
+# Estas funções contêm os testes normais do nosso sistema.
+# Se a função mutante que passarmos para aqui tiver um erro, o "assert" falha.
+
+def testar_calculadora(funcao_somar, funcao_dividir):
+    try:
+        # Se a matemática estiver certa, estes asserts passam.
+        # Se o mutante alterar o resultado, ocorre um erro (AssertionError).
+        assert funcao_somar(2, 3) == 5
+        assert funcao_dividir(10, 2) == 5
+        return "SOBREVIVEU"  # Se não deu erro, os testes deixaram passar o bug (Mau)
+    except AssertionError:
+        return "MORREU"      # Se deu erro, os testes apanharam o bug (Bom)
+
+def testar_passwords(funcao_validar):
+    try:
+        # Uma senha forte deve ser aceite (True)
+        assert funcao_validar("12345678aA!") == True
+        # Uma senha de apenas uma letra deve ser rejeitada (False)
+        assert funcao_validar("x") == False
+        return "SOBREVIVEU"
+    except AssertionError:
+        return "MORREU"
+
+def testar_loans(funcao_emprestimo):
+    try:
+        # Um perfil excelente deve ser aprovado
+        assert funcao_emprestimo(8000, 800, 0, 10, 40) == "APPROVE"
+        # Um perfil muito mau deve ser rejeitado
+        assert funcao_emprestimo(1000, 300, 5000, 0, 19) == "REJECT"
+        return "SOBREVIVEU"
+    except AssertionError:
+        return "MORREU"
+
 
 # =====================================================
-# Mutation Testing 
+# 2. SIMULADOR DE MUTATION TESTING
 # =====================================================
-# Mede a capacidade dos testes de detetar erros
-# introduzidos no código 
-#
-# OUTPUT:
-#   mutation_score (0 a 1)
-# =====================================================
-
 def run_mutation_tests(system):
+    mutantes_mortos = 0
+    total_mutantes = 0
 
-    killed = 0
-    total = 0
-
-    # =========================
-    # Calculadora
-    # =========================
+    # -------------------------------------------------
+    # CASO 1: CALCULADORA
+    # -------------------------------------------------
     if system == "calculator":
-        total = 2
+        total_mutantes = 2
 
-        def mutant_add(a, b):
+        # Criamos o Mutante 1 (Soma com bug injetado)
+        def mutante_soma_errada(a, b):
             return a + b + 1
 
-        if mutant_add(2, 3) != add(2, 3):
-            killed += 1
+        # Corremos os testes da calculadora usando este mutante
+        resultado1 = testar_calculadora(mutante_soma_errada, divide)
+        if resultado1 == "MORREU":
+            mutantes_mortos += 1
 
-        def mutant_divide(a, b):
-            if b == 0:
-                return 0
-            return a / b
+        # Criamos o Mutante 2 (Divisão com bug injetado)
+        def mutante_divisao_errada(a, b):
+            return a / b + 5
 
-        if mutant_divide(10, 2) != divide(10, 2):
-            killed += 1
+        resultado2 = testar_calculadora(add, mutante_divisao_errada)
+        if resultado2 == "MORREU":
+            mutantes_mortos += 1
 
-
-    # =========================
-    # Validar Passwords
-    # =========================
+    # -------------------------------------------------
+    # CASO 2: PASSWORDS
+    # -------------------------------------------------
     elif system == "passwords":
-        total = 2
+        total_mutantes = 2
 
-        def mutant_password(p):
+        # Criamos o Mutante 1 (Aprova sempre tudo, mesmo senhas curtas)
+        def mutante_pass_facil(p):
             return True
 
-        if mutant_password("x") != validate_password("x"):
-            killed += 1
+        resultado1 = testar_passwords(mutante_pass_facil)
+        if resultado1 == "MORREU":
+            mutantes_mortos += 1
 
-        def mutant_len(p):
-            return len(p) > 3
+        # Criamos o Mutante 2 (Rejeita sempre tudo)
+        def mutante_pass_bloqueada(p):
+            return False
 
-        if mutant_len("1234") != validate_password("1234"):
-            killed += 1
+        resultado2 = testar_passwords(mutante_pass_bloqueada)
+        if resultado2 == "MORREU":
+            mutantes_mortos += 1
 
-
-    # =========================
-    # Aprovar Empréstimos
-    # =========================
+    # -------------------------------------------------
+    # CASO 3: EMPRÉSTIMOS (LOAN)
+    # -------------------------------------------------
     elif system == "loan":
-        total = 2
+        total_mutantes = 2
 
-        def mutant_loan(income, credit, debt, years, age):
-            return "APPROVE"  # ignora risco
+        # Criamos o Mutante 1 (Aprova sempre todos os empréstimos)
+        def mutante_loan_permissivo(income, credit, debt, years, age):
+            return "APPROVE"
 
-        if mutant_loan(1000, 300, 0, 1, 20) != evaluate_loan(1000, 300, 0, 1, 20):
-            killed += 1
+        resultado1 = testar_loans(mutante_loan_permissivo)
+        if resultado1 == "MORREU":
+            mutantes_mortos += 1
 
-        def mutant_loan_risk(income, credit, debt, years, age):
+        # Criamos o Mutante 2 (Rejeita sempre todos os empréstimos)
+        def mutante_loan_rigido(income, credit, debt, years, age):
             return "REJECT"
 
-        if mutant_loan_risk(8000, 800, 0, 10, 40) != evaluate_loan(8000, 800, 0, 10, 40):
-            killed += 1
+        resultado2 = testar_loans(mutante_loan_rigido)
+        if resultado2 == "MORREU":
+            mutantes_mortos += 1
 
-
-    return killed / total if total > 0 else 0
+    # Retorna o score final (percentagem de mutantes apanhados)
+    if total_mutantes > 0:
+        return mutantes_mortos / total_mutantes
+    else:
+        return 0
