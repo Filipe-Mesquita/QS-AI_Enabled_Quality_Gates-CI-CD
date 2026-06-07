@@ -5,10 +5,10 @@ fetch("../data/metrics.json")
         const total = data.length;
 
         const passes =
-            data.filter(x => x.final_decision === "APPROVE").length;
+            data.filter(x => (x.final_decision === "APPROVE") || (x.final_decision === "OVERRIDE_APPROVE")).length;
 
         const fails =
-            data.filter(x => x.final_decision === "REJECT").length;
+            data.filter(x => (x.final_decision === "REJECT") || (x.final_decision === "OVERRIDE_REJECT")).length;
 
         const reviews =
             data.filter(x => x.final_decision === "REVIEW").length;
@@ -48,6 +48,9 @@ fetch("../data/metrics.json")
 
         document.getElementById("failRate").innerText =
             ((fails / total) * 100).toFixed(1) + "%";
+
+        document.getElementById("reviewRate").innerText =
+            ((reviews / total) * 100).toFixed(1) + "%";
 
         document.getElementById("overrides").innerText =
             overrides;
@@ -180,7 +183,7 @@ fetch("../data/metrics.json")
             REVIEW: { APPROVE: 0, REVIEW: 0, REJECT: 0 },
             REJECT: { APPROVE: 0, REVIEW: 0, REJECT: 0 }
         };
-        
+
         data.forEach(item => {
 
             let final = item.final_decision;
@@ -190,22 +193,7 @@ fetch("../data/metrics.json")
             if (final === "OVERRIDE_REJECT") final = "REJECT";
 
             rq1[item.ai_decision][final]++;
-
-            console.log("AI decision:", item.ai_decision);
-            console.log("FINAL decision (normalized):", final);
         });
-
-
-
-        console.log("Approve approve:", rq1.APPROVE.APPROVE);
-        console.log("approve review:", rq1.APPROVE.REVIEW);
-        console.log("approve reject:", rq1.APPROVE.REJECT);
-        console.log("review approve:", rq1.REVIEW.APPROVE);
-        console.log("review review:", rq1.REVIEW.REVIEW);
-        console.log("review reject:", rq1.REVIEW.REJECT);
-        console.log("reject approve:", rq1.REJECT.APPROVE);
-        console.log("reject reeview:", rq1.REJECT.REVIEW);
-        console.log("reject reject:", rq1.REJECT.REJECT);
 
         new Chart(
             document.getElementById("rq1Chart"),
@@ -353,25 +341,48 @@ fetch("../data/metrics.json")
         console.log("False Negative:", falseNegative);
 
         const noFalseCases =
-            (falsePositive === 0 && falseNegative === 0) ? 100 : 0;
+            data.filter(
+                x =>
+                    (x.final_decision === "APPROVE"
+                        &&
+                        x.merge_final_decision === "GOOD")
+                    ||
+                    (x.final_decision === "OVERRIDE_APPROVE"
+                        &&
+                        x.merge_final_decision === "GOOD")
+                    ||
+                    (x.final_decision === "REJECT"
+                        &&
+                        x.merge_final_decision === "BAD")
+                    ||
+                    (x.final_decision === "OVERRIDE_REJECT"
+                        &&
+                        x.merge_final_decision === "BAD")
+            ).length;
 
         new Chart(
             document.getElementById("falseDecisionChart"),
             {
-                type: "doughnut",
+                type: "bar",
                 data: {
-                    labels: [
-                        "False Positive",
-                        "False Negative",
-                        "No False Cases"
-                    ],
-                    datasets: [{
-                        data: [
-                            falsePositive,
-                            falseNegative,
-                            noFalseCases
-                        ]
-                    }]
+                    labels: ["False Positive", "False Negative"],
+                    datasets: [
+                        {
+                            label: "Number of Cases",
+                            data: [
+                                falsePositive,
+                                falseNegative
+                            ]
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
                 }
             }
         );

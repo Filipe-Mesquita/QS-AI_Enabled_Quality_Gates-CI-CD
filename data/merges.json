@@ -1,0 +1,502 @@
+[
+    {
+        "merge_id": 0,
+        "system": "loan",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 1,
+        "system": "passwords",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 2,
+        "system": "calculator",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 3,
+        "system": "loan",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 4,
+        "system": "calculator",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 5,
+        "system": "calculator",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 6,
+        "system": "loan",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 7,
+        "system": "passwords",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 8,
+        "system": "loan",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 9,
+        "system": "passwords",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 10,
+        "system": "loan",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 11,
+        "system": "passwords",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 12,
+        "system": "loan",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 13,
+        "system": "loan",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 14,
+        "system": "loan",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 15,
+        "system": "calculator",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 16,
+        "system": "calculator",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 17,
+        "system": "passwords",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 18,
+        "system": "loan",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 19,
+        "system": "loan",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 20,
+        "system": "loan",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 21,
+        "system": "calculator",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 22,
+        "system": "calculator",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 23,
+        "system": "calculator",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 24,
+        "system": "loan",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 25,
+        "system": "calculator",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 26,
+        "system": "passwords",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 27,
+        "system": "passwords",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 28,
+        "system": "calculator",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 29,
+        "system": "loan",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 30,
+        "system": "passwords",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 31,
+        "system": "passwords",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 32,
+        "system": "passwords",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 33,
+        "system": "calculator",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 34,
+        "system": "passwords",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 35,
+        "system": "passwords",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 36,
+        "system": "passwords",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 37,
+        "system": "passwords",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 38,
+        "system": "loan",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 39,
+        "system": "loan",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 40,
+        "system": "loan",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 41,
+        "system": "passwords",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 42,
+        "system": "passwords",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 43,
+        "system": "passwords",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 44,
+        "system": "calculator",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 45,
+        "system": "calculator",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 46,
+        "system": "loan",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 47,
+        "system": "calculator",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 48,
+        "system": "loan",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 49,
+        "system": "loan",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 50,
+        "system": "passwords",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 51,
+        "system": "loan",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 52,
+        "system": "calculator",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 53,
+        "system": "loan",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 54,
+        "system": "calculator",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 55,
+        "system": "calculator",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 56,
+        "system": "calculator",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 57,
+        "system": "calculator",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 58,
+        "system": "loan",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 59,
+        "system": "passwords",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 60,
+        "system": "passwords",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 61,
+        "system": "loan",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 62,
+        "system": "loan",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 63,
+        "system": "loan",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 64,
+        "system": "calculator",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 65,
+        "system": "passwords",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 66,
+        "system": "calculator",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 67,
+        "system": "passwords",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 68,
+        "system": "passwords",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 69,
+        "system": "passwords",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 70,
+        "system": "calculator",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 71,
+        "system": "passwords",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 72,
+        "system": "passwords",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 73,
+        "system": "passwords",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 74,
+        "system": "loan",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 75,
+        "system": "passwords",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 76,
+        "system": "loan",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 77,
+        "system": "passwords",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 78,
+        "system": "passwords",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 79,
+        "system": "calculator",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 80,
+        "system": "loan",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 81,
+        "system": "loan",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 82,
+        "system": "loan",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 83,
+        "system": "passwords",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 84,
+        "system": "loan",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 85,
+        "system": "calculator",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 86,
+        "system": "calculator",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 87,
+        "system": "loan",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 88,
+        "system": "calculator",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 89,
+        "system": "passwords",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 90,
+        "system": "calculator",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 91,
+        "system": "calculator",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 92,
+        "system": "calculator",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 93,
+        "system": "passwords",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 94,
+        "system": "passwords",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 95,
+        "system": "calculator",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 96,
+        "system": "calculator",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 97,
+        "system": "loan",
+        "merge_final_decision": "GOOD"
+    },
+    {
+        "merge_id": 98,
+        "system": "loan",
+        "merge_final_decision": "BAD"
+    },
+    {
+        "merge_id": 99,
+        "system": "calculator",
+        "merge_final_decision": "GOOD"
+    }
+]
