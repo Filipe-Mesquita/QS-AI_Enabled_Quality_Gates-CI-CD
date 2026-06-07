@@ -13,7 +13,7 @@ from app.loan import evaluate_loan
 # geração de inputs.
 #
 # OUTPUT:
-#   coverage → valor entre 0 e 100
+#   pass_rate → valor entre 0 e 100
 # =====================================================
 
 def run_unit_tests(system):
@@ -112,8 +112,8 @@ def run_unit_tests(system):
                 passed += 1
 
     # =================================================
-    # COVERAGE SIMULADA 
+    # Pass Rate
     # =================================================
-    coverage = passed / executed if executed > 0 else 0
+    pass_rate = passed / executed if executed > 0 else 0
 
-    return coverage
+    return pass_rate

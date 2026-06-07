@@ -43,7 +43,7 @@ for merge in merges:
 
         # Simulação de código defeituoso (com erros ou bugs)
         # Geramos métricas más para simular um Pull Request com bugs/código fraco
-        coverage = random.uniform(0.35, 0.60)        
+        pass_rate = random.uniform(0.35, 0.60)        
         fuzz_failures = random.uniform(0.15, 0.45)   
         mutation_score = random.uniform(0.20, 0.50)  
         lint_errors = random.randint(10, 28)         
@@ -51,7 +51,7 @@ for merge in merges:
     else:
 
         # Simulação de código sem erros nem bugs 
-        coverage = run_unit_tests(system)
+        pass_rate = run_unit_tests(system)
         fuzz_failures = run_fuzz_tests(system)
         mutation_score = run_mutation_tests(system)
         lint_errors = run_lint_analysis(system)
@@ -61,7 +61,7 @@ for merge in merges:
     # Risk Engine
     # -----------------------------
     # É calculado o risco com base nas métricas 
-    risk_score = compute_risk(coverage, fuzz_failures, mutation_score, lint_errors, complexity)
+    risk_score = compute_risk(pass_rate, fuzz_failures, mutation_score, lint_errors, complexity)
 
     # -----------------------------
     # AI Gate
@@ -86,7 +86,7 @@ for merge in merges:
     # -----------------------------
     metrics.add({
         "system": system,
-        "coverage": coverage,
+        "pass_rate": pass_rate,
         "fuzz_failures": fuzz_failures,
         "mutation_score": mutation_score,
         "lint_errors": lint_errors,

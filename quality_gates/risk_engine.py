@@ -5,18 +5,18 @@
 # Este risco "risk" é utilizado pela IA
 # ========================================================
 
-def compute_risk(coverage, fuzz_failures, mutation_score, lint_errors, complexity):
+def compute_risk(pass_rate, fuzz_failures, mutation_score, lint_errors, complexity):
  
     risk = 0
 
     # -----------------------------
-    # Coverage 
+    # Pass Rate 
     # -----------------------------
 
     # Baixa cobertura indica testes insuficientes
-    if coverage < 0.60:
+    if pass_rate < 0.60:
         risk += 20
-    elif coverage < 0.80:
+    elif pass_rate < 0.80:
         risk += 10
 
     # -----------------------------
