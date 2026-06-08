@@ -21,12 +21,12 @@ fetch("../data/metrics.json")
         const defectLeakage = data.reduce((count, item) => {
 
             if (
-                item.final_decision === "REJECT" &&
-                item.merge_final_decision === "GOOD"
+                item.final_decision === "APPROVE" &&
+                item.merge_final_decision === "BAD"
             ) {
+                
                 return count + 1;
             }
-
             return count;
 
         }, 0);

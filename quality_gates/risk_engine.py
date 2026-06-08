@@ -41,17 +41,20 @@ def compute_risk(pass_rate, fuzz_failures, mutation_score, lint_errors, complexi
     # -----------------------------    
 
     # Erros de estilo e possíveis bugs
-    risk += lint_errors * 2
+    # 2
+    risk += lint_errors * 15
 
     # -----------------------------
     # Complexity
     # -----------------------------
 
     # Código mais complexo = mais risco de defeitos
+    # 15
     if complexity > 15:
-        risk += 15
+        risk += 40
+    # 8
     elif complexity > 10:
-        risk += 8
+        risk += 35
 
 
         

@@ -12,10 +12,11 @@ class AIGate:
         
         score = 100 - risk_score
 
-        
-        if score >= 70:
+        # 70
+        if score >= 30:
             decision = "APPROVE"
-        elif score >= 50:          
+        # 50
+        elif score >= 15:          
             decision = "REVIEW"
         else:                      
             decision = "REJECT"
