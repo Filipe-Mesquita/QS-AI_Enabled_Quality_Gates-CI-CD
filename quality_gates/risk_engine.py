@@ -2,7 +2,7 @@
 # Função compute_risk
 # ========================================================
 # Calcula o risco associado as métricas obtidas dos testes 
-# Este risco "risk" é utilizado pela IA
+# Este risco é utilizado pela IA
 # ========================================================
 
 def compute_risk(pass_rate, fuzz_failures, mutation_score, lint_errors, complexity):
@@ -13,7 +13,7 @@ def compute_risk(pass_rate, fuzz_failures, mutation_score, lint_errors, complexi
     # Pass Rate 
     # -----------------------------
 
-    # Baixa cobertura indica testes insuficientes
+    # Baixo pass_rate indica que o código tem erros
     if pass_rate < 0.60:
         risk += 20
     elif pass_rate < 0.80:

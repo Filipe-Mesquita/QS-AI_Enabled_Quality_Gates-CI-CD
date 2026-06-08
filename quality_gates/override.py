@@ -7,18 +7,19 @@
 
 def apply_override(ai_decision, manual_decision):
 
-    # IA rejeita mas Humano assume o risco e aprova
+    # IA rejeita mas Humano aprova
     if ai_decision == "REJECT" and manual_decision == "APPROVE":
         return "OVERRIDE_APPROVE"
 
-    # IA aprova mas Humano deteta algo e rejeita
+    # IA aprova mas Humano rejeita
     if ai_decision == "APPROVE" and manual_decision == "REJECT":
         return "OVERRIDE_REJECT"
 
-    # IA está em dúvida (REVIEW) mas o Humano toma uma ação direta
+    # IA está em dúvida (REVIEW) mas o Humano aprova
     if ai_decision == "REVIEW" and manual_decision == "APPROVE":
         return "OVERRIDE_APPROVE"
     
+    # IA está em dúvida (REVIEW) mas o Humano rejeita
     if ai_decision == "REVIEW" and manual_decision == "REJECT":
         return "OVERRIDE_REJECT"
     

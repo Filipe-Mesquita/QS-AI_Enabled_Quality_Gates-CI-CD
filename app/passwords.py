@@ -63,10 +63,6 @@ def validate_password(password):
     if re.search(r"[!@#$%^&*]", password):
         score += 1
 
-    # Lista com passwords conhecidas/muito utilizadas
-    # Ir buscara a lista de mais utilizadas !!
-    weak_passwords = ["1234", "password"]
-
     # Se a password avaliada for uma das presentes no ficheiro
     # Reduzir a pontuação da mesma
     if password.lower() in weak_passwords:
