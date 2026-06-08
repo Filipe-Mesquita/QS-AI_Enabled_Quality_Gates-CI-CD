@@ -61,7 +61,6 @@ for d in data:
     human = d.get("human_decision")
     ground_truth = d.get("merge_final_decision")
 
-    # Contagem de decisões
     inc(final_decisions, fd)
     inc(ai_decisions, ai)
     inc(human_decisions, human)
@@ -85,7 +84,6 @@ for d in data:
     if fd in ["APPROVE", "OVERRIDE_APPROVE"] and ground_truth == "BAD":
         leakage += 1
 
-    # Agregação de métricas por decisão final
     add_metric(pass_rate_by_decision, fd, d.get("pass_rate", 0))
     add_metric(lint_by_decision, fd, d.get("lint_errors", 0))
     add_metric(complexity_by_decision, fd, d.get("complexity", 0))
